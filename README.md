@@ -33,8 +33,7 @@ vim ~/.bashrc
 alias someinternalhost='ssh someinternalhost'
 ```
 
-```
-bastion_IP = 158.160.106.57 someinternalhost_IP = 10.128.0.8
-
-testapp_IP = 51.250.94.43 testapp_port = 9292
+```bash
+bastion_IP = 158.160.106.57
+someinternalhost_IP = 10.128.0.8
 ```
