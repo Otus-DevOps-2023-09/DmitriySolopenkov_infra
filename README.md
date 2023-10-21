@@ -34,6 +34,6 @@ alias someinternalhost='ssh someinternalhost'
 ```
 
 ```bash
-bastion_IP = 158.160.106.57
+bastion_IP = 51.250.94.43
 someinternalhost_IP = 10.128.0.8
 ```
