@@ -39,6 +39,8 @@ bastion_IP = 51.250.94.43
 someinternalhost_IP = 10.128.0.8
 ```
 
+---
+
 ## Cloud-testapp homework
 
 testapp_IP = 158.160.120.62
@@ -55,3 +57,46 @@ yc compute instance create \
  --metadata-from-file user-data=cloud-init.conf
 
 ```
+
+---
+
+## Packer homework
+
+### Используем packer для создания образа для compute instance
+
+- ставим packer, создаем service account key file, по шагам в дз.
+- создаем *.json с параметрами и provisioner-инструкциями для packer.
+- исталляция ruby, mongo - представлена 2мя provisioner скриптами
+- запускаем сборку образа: `packer build ./ubuntu16.json`
+
+---
+
+### Диагностика ошибки
+
+>> `Build 'yandex' errored: Failed to find instance ip address: instance has no one IPv4 external address.`
+
+- фиксируется добавлением в секции "builders":
+
+```json
+            "use_ipv4_nat": true
+```
+
+>> отказ создавать еще одну подсеть (дефолтное поведение CLI-команды создания инстанса)
+
+- фиксим использованием существующей, указываем в секции "builders":
+
+```json
+            "subnet_id": "{{user `subnet_id`}}",
+```
+
+### Выносим часть параметров в файл variables.json
+
+- заносим variables.json в .gitignore; переносим значения privacy-sensitive части параметров в variables.json.
+- создаем variables.json.example с фейковыми значениями параметров из variables.json, для re-use git-кода
+- в новом проекте необходимо
+   -- `cp variables.json.example variables.json`
+   -- поставить правильные значения в variables.json
+- команда создания образа: `packer build -var-file=./variables.json ./ubuntu16.json`
+- созданный образ используем при создании compute instance, логинимся по ssh.
+- вручную инсталлируем & запускаем web-приложение `https://github.com/express42/reddit.git` вручную.
+- проверяем работу в браузере: http://<внешний IP машины>:9292
