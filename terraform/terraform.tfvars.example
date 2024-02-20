@@ -1,0 +1,8 @@
+yandex_cloud_id             = "xxxxxxxxxxxxxxxxxxxx"
+yandex_folder_id            = "xxxxxxxxxxxxxxxxxxxx"
+service_account_key_file    = "key.json"
+yandex_image_id         = "xxxxxxxxxxxxxxxxxxxx"
+
+
+public_key_path  = "~/.ssh/ubuntu.pub"
+private_key_path = "~/.ssh/ubuntu"
