@@ -465,3 +465,27 @@ variable zone {
 - параметризуем модули переменными `path.module, app_disk_image, subnet_id`
   - при желании, можем параметризовать разные defaults для `core_fraction, cores, memory` для stage VS prod; но по задаче у нас пока идентичные env'ы
 - `terraform fmt`
+
+## лекция 10: дз "ansible-1"
+
+> следуем инструкциям ДЗ
+
+- ansible --version
+  - `ansible [core 2.16.4]`
+- поднимаем инфраструктуру stage из ДЗ terraform-2
+  - `cd terraform/stage; terraform apply` (подробнее\* 'ДЗ terraform-2')
+- создаем статический `ansible/inventory` с 2 строками (в ini-формате)\* определяем appserver, dbserver.
+  - проверяем: `ansible appserver -i ./inventory -m ping; ansible dbserver -i ./inventory -m ping`
+- создаем `./ansible.cfg`, переносим в него `inventory, remote_user, private_key_file`. Это позволяет убрать из статического inventory соответствующие поля.
+  - команда ansible редуцируется до `ansible dbserver -m command -a uptime`
+- группируем хосты в `inventory`;
+  - становятся доступны групповые команды: `ansible app -m ping`
+- конвертируем inventory в yaml формат; указываем в `./ansible.cfg` новый статический инвентори-файл: `inventory = inventory.yml`
+  - проверяем: `ansible app -m ping; ansible all -m ping; ansible dbserver -m ping`
+  - вместо модификации `./ansible.cfg`, альтернативный inventory можно указывать из командной строки: `ansible all -m ping -i inventory.yml`
+- проверяем работу и сравниваем поведение модулей `ansible`: `command, shell, systemd, service, git`
+- создаем playbook `clone.yml` для клонирования git-репозитория
+  - запускаем `ansible-playbook clone.yml`
+    - клонирование не имело места, т.к. код уже находится в указанном месте.
+  - выполняем `ansible app -m command -a 'rm -rf ~/reddit'; ansible-playbook clone.yml`
+    - 2е клонирование было не "вхолостую", т.к. код в указанном месте отсутствовал.
