@@ -8,4 +8,6 @@ packer/variables.json
 .terraform/
 .terraform.lock.hcl
 
-.venv
+.venv/
+
+*.retry

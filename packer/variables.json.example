@@ -1,6 +1,6 @@
 {
         "folder_id": "ffffffffffffffffffff",
-        "service_account_key_file": "key.json.example",
+        "service_account_key_file": "packer/key.json.example",
         "source_image_family": "ubuntu-1604-lts",
         "instance_mem_gb": "0.5"
 }
