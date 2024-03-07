@@ -3,6 +3,11 @@
 version: 0.1
 cli:
   version: 1.20.1
+  options:
+    - commands: [ALL] # apply to all `trunk` commands
+      args: --monitor=true
+    - commands: [check, fmt] # apply only to `trunk check` and `trunk fmt` commands
+      # args: -y
 # Trunk provides extensibility via plugins. (https://docs.trunk.io/plugins)
 plugins:
   sources:
@@ -18,8 +23,10 @@ runtimes:
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
 lint:
   enabled:
+    - ansible-lint@24.2.0
     - pre-commit-hooks@4.5.0:
         commands:
+          - check-merge-conflict
           - end-of-file-fixer
           - trailing-whitespace
     - hadolint@2.12.0
@@ -40,6 +47,13 @@ lint:
     - trivy@0.49.1
     - trufflehog@3.68.3
     - yamllint@1.35.1
+  triggers:
+    - linters:
+        - ansible-lint
+      paths:
+        - ansible
+      targets:
+        - ansible
 actions:
   enabled:
     - trunk-announce
